@@ -4,12 +4,12 @@ import javax.swing.ImageIcon;
 
 public abstract class Personaje {
     //Completar Tipos y Modificadores!!
-    nombre;
-    vida;
+    protected nombre;
+    protected vida;
     private poder;
     private final int tipo;
     private boolean defendiendo;
-    esEnemigo;
+    private esEnemigo;
     
     //Ignorar
     private final ImageIcon baseImagen;
@@ -17,7 +17,10 @@ public abstract class Personaje {
     public Personaje(String nombre, int vida, int poder, int tipo, boolean esEnemigo) {
         // Completar todo lo necesario!!
         this.nombre = nombre;
-        this.vida = ;
+        this.vida = vida;
+        this.poder = poder;
+        this.tipo = tipo;
+        this.esEnemigo = esEnemigo;
         this.defendiendo = false;
 
         // No modificar (se encarga de asignar imágenes automáticamente)
@@ -40,12 +43,27 @@ public abstract class Personaje {
     public String getNombre() { 
         return this.nombre;     // ejemplo
     }
-    public int getVida() { ... }
-    public void setVida(int vida) { ... }
-    public int getPoder() { ... }
-    public void setDefensa() { ... }
-    public boolean estaVivo() { ... }
-    public void recibirDanio(int danio) { ... }
+    public int getVida() { 
+        return this.vida;
+     }
+    public void setVida(int vida) { 
+        this.vida = vida;
+     }
+    public int getPoder() { 
+        return this.poder;
+     }
+    public void setDefensa() { 
+        this.defendiendo = true;
+     }
+    public boolean estaVivo() { 
+        return this.vida > 0; 
+     }
+    public void recibirDanio(int danio) { 
+        if (!estaVivo()) return;
+        int d = Math.max(0, danio);
+        if (this.defendiendo) d = d / 4;
+        this.vida = Math.max(0, this.vida - d);
+     }
 
     // Métodos abstractos (deben implementarse en subclases)
     public abstract int atacar();
