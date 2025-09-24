@@ -4,12 +4,12 @@ import javax.swing.ImageIcon;
 
 public abstract class Personaje {
     //Completar Tipos y Modificadores!!
-    protected nombre;
-    protected vida;
-    private poder;
+    private String nombre;
+    private int vida;
+    private int poder;
     private final int tipo;
     private boolean defendiendo;
-    private esEnemigo;
+    private boolean esEnemigo;
     
     //Ignorar
     private final ImageIcon baseImagen;
@@ -22,7 +22,7 @@ public abstract class Personaje {
         this.tipo = tipo;
         this.esEnemigo = esEnemigo;
         this.defendiendo = false;
-
+        
         // No modificar (se encarga de asignar imágenes automáticamente)
         if (!esEnemigo) {
             baseImagen = switch (tipo) {
@@ -47,7 +47,7 @@ public abstract class Personaje {
         return this.vida;
      }
     public void setVida(int vida) { 
-        this.vida = vida;
+        Math.max(0, vida);
      }
     public int getPoder() { 
         return this.poder;
@@ -59,10 +59,11 @@ public abstract class Personaje {
         return this.vida > 0; 
      }
     public void recibirDanio(int danio) { 
-        if (!estaVivo()) return;
-        int d = Math.max(0, danio);
-        if (this.defendiendo) d = d / 4;
-        this.vida = Math.max(0, this.vida - d);
+        if (!estaVivo()) return; //si no esta vivo no recibe daño
+        int danioAux = Math.max(0, danio); //auxiliar
+        if (this.defendiendo) danioAux = danioAux / 4; //si defiende reduce a 1/4 el daño (podria usar op ternario)
+        this.vida = Math.max(0, this.vida - danioAux); //reduce la vida
+        this.defendiendo = false; // Desactiva defensa después de recibir daño
      }
 
     // Métodos abstractos (deben implementarse en subclases)
